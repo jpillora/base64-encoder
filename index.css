@@ -2,13 +2,16 @@
 
 body {
   text-align: center;
-  font-family: Helvetica
+  font-family: Helvetica;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .item {
-margin: 10px;
-background: #F5F5F5;
-padding: 20px;
+  margin: 10px;
+  background: #F5F5F5;
+  padding: 20px;
 }
 
 pre {
@@ -16,5 +19,19 @@ pre {
   word-wrap: break-word;
 }
 
-#holder { border: 10px dashed #ccc; width: 100px; height: 100px; margin: 20px auto;}
-#holder.hover { border: 10px dashed #333; }
+#results {
+  position: relative;
+  margin: 50px;
+}
+#dropper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+#dropper.hover {
+  opacity: 0.5;
+  background: lightblue;
+  z-index: 100;
+}

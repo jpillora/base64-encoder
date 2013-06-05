@@ -2,12 +2,12 @@
 if (typeof window.FileReader === 'undefined')
   alert('File API & FileReader not supported');
 
-var holder = document.getElementById("holder");
+var dropper = document.getElementById("dropper");
 var results = document.getElementById("results");
 
-holder.ondragover = function () { this.className = 'hover'; return false; };
-holder.ondragend = function () { this.className = ''; return false; };
-holder.ondrop = function (e) {
+dropper.ondragover = function () { dropper.className = 'hover'; return false; };
+dropper.ondragend = function () { dropper.className = ''; return false; };
+dropper.ondrop = function (e) {
   e.preventDefault();
   var file = e.dataTransfer.files[0],
       reader = new FileReader();
@@ -15,6 +15,7 @@ holder.ondrop = function (e) {
     fileLoaded(file, event.target.result);
   };
   reader.readAsDataURL(file);
+  dropper.className = '';
   return false;
 };
 
@@ -27,13 +28,15 @@ function fileLoaded(file, dataUri) {
   name.innerHTML = file.name;
   div.appendChild(name);
 
-  var imgDiv = document.createElement("div");
-  var img = document.createElement("img");
-  img.src = dataUri;
-  img.style['max-width'] = '100px';
-  img.style['height-width'] = '100px';
-  imgDiv.appendChild(img);
-  div.appendChild(imgDiv);
+  if(/^data:image/.test(dataUri)) {
+    var imgDiv = document.createElement("div");
+    var img = document.createElement("img");
+    img.src = dataUri;
+    img.style['max-width'] = '100px';
+    img.style['height-width'] = '100px';
+    imgDiv.appendChild(img);
+    div.appendChild(imgDiv);
+  }
 
   var pre = document.createElement("pre");
   pre.innerHTML = dataUri;
