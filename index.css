@@ -11,14 +11,26 @@ body {
 }
 
 .item {
+  position: relative;
   margin: 10px;
   background: #F5F5F5;
   padding: 20px;
 }
 
-pre {
-  text-align: left;
-  word-wrap: break-word;
+.remove {
+  position: absolute;
+  right: 10;
+  top: 10;
+  opacity: 0.5;
+}
+
+textarea {
+  width: 100%;
+  margin: 2px 0px;
+  height: 120px;
+  font-family: Courier;
+  border: none;
+  background: whitesmoke;
 }
 
 #results {

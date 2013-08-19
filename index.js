@@ -12,20 +12,29 @@ dropper.ondrop = function (e) {
   var file = e.dataTransfer.files[0],
       reader = new FileReader();
   reader.onload = function(event) {
-    fileLoaded(file, event.target.result);
+    fileLoaded(file.name, event.target.result);
   };
   reader.readAsDataURL(file);
   dropper.className = '';
   return false;
 };
 
-function fileLoaded(file, dataUri) {
+function fileLoaded(filename, dataUri) {
 
   var div = document.createElement("div");
   div.className = 'item';
 
+  var remove = document.createElement("button");
+  remove.className = 'remove';
+  remove.innerHTML = 'x';
+  remove.onclick = function() {
+    if(localStorage) localStorage.removeItem(filename);
+    results.removeChild(div);
+  };
+  div.appendChild(remove);
+
   var name = document.createElement("div");
-  name.innerHTML = file.name;
+  name.innerHTML = filename;
   div.appendChild(name);
 
   if(/^data:image/.test(dataUri)) {
@@ -38,10 +47,19 @@ function fileLoaded(file, dataUri) {
     div.appendChild(imgDiv);
   }
 
-  var pre = document.createElement("pre");
-  pre.innerHTML = dataUri;
-  div.appendChild(pre);
+  var ta = document.createElement("textarea");
+  ta.onclick = function() {
+    ta.select();
+  };
+  ta.value = dataUri;
+  div.appendChild(ta);
 
   results.appendChild(div);
-
+  if(localStorage) localStorage.setItem(filename, dataUri);
 }
+
+if(localStorage)
+  for(var filename in localStorage)
+    fileLoaded(filename, localStorage.getItem(filename));
+
+
