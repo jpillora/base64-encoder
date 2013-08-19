@@ -1,0 +1,50 @@
+<html>
+  <head>   
+    <title>URL Website Maker</title>
+    <style>
+      a {
+        background: whitesmoke;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        color: black;
+        text-decoration: none;
+      }
+      #ta {
+        font-size: 18px;
+        font-family: Courier;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <a id="ln" target="_blank">Open this page</a>
+    <div id="ta"></div>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
+    <script>
+
+
+      var ln = document.getElementById('ln');
+      var update = function() {
+        ln.href = 'data:text/html;base64,' + btoa(editor.session.getValue());
+      }
+
+      var editor = ace.edit("ta");
+      editor.setTheme("ace/theme/monokai");
+      editor.getSession().setMode("ace/mode/html");
+      editor.on('change',update);
+      editor.session.setValue( 
+        atob(/base64,(.*)/.test(window.location.href) ? RegExp.$1 : '')
+      );
+    </script>
+  </body>
+</html>
