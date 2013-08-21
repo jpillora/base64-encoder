@@ -1,13 +1,130 @@
 <html>
   <head>   
     <title>Base64 File Encoder</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <style>
+    body {
+      text-align: center;
+      font-family: Helvetica;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .item {
+      position: relative;
+      margin: 10px;
+      background: #F5F5F5;
+      padding: 20px;
+    }
+    
+    .remove {
+      position: absolute;
+      right: 10;
+      top: 10;
+      opacity: 0.5;
+    }
+    
+    textarea {
+      width: 100%;
+      margin: 2px 0px;
+      height: 120px;
+      font-family: Courier;
+      border: none;
+      background: whitesmoke;
+    }
+    
+    #results {
+      position: relative;
+      margin: 50px;
+    }
+    #dropper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #dropper.hover {
+      opacity: 0.5;
+      background: lightblue;
+      z-index: 100;
+    }
+    </style>
   </head>
   <body>
+    <a href="https://github.com/jpillora/base64-encoder">
+      <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+    </a>
+  
     <h2>Base64 File Encoder</h2>
     <h4>Drop Files here</h4>
     <div id="dropper"></div> 
     <div id="results"></div>
-    <script src="index.js"></script>
+    <script>
+    if (typeof window.FileReader === 'undefined')
+      alert('File API & FileReader not supported');
+    
+    var dropper = document.getElementById("dropper");
+    var results = document.getElementById("results");
+    
+    dropper.ondragover = function () { dropper.className = 'hover'; return false; };
+    dropper.ondragend = function () { dropper.className = ''; return false; };
+    dropper.ondrop = function (e) {
+      e.preventDefault();
+      var file = e.dataTransfer.files[0],
+          reader = new FileReader();
+      reader.onload = function(event) {
+        fileLoaded(file.name, event.target.result);
+      };
+      reader.readAsDataURL(file);
+      dropper.className = '';
+      return false;
+    };
+    
+    function fileLoaded(filename, dataUri) {
+    
+      var div = document.createElement("div");
+      div.className = 'item';
+    
+      var remove = document.createElement("button");
+      remove.className = 'remove';
+      remove.innerHTML = 'x';
+      remove.onclick = function() {
+        if(localStorage) localStorage.removeItem(filename);
+        results.removeChild(div);
+      };
+      div.appendChild(remove);
+    
+      var name = document.createElement("div");
+      name.innerHTML = filename;
+      div.appendChild(name);
+    
+      if(/^data:image/.test(dataUri)) {
+        var imgDiv = document.createElement("div");
+        var img = document.createElement("img");
+        img.src = dataUri;
+        img.style['max-width'] = '100px';
+        img.style['height-width'] = '100px';
+        imgDiv.appendChild(img);
+        div.appendChild(imgDiv);
+      }
+    
+      var ta = document.createElement("textarea");
+      ta.onclick = function() {
+        ta.select();
+      };
+      ta.value = dataUri;
+      div.appendChild(ta);
+    
+      results.appendChild(div);
+      if(localStorage) localStorage.setItem(filename, dataUri);
+    }
+    
+    if(localStorage)
+      for(var filename in localStorage)
+        fileLoaded(filename, localStorage.getItem(filename));
+    </script>
   </body>
 </html>
