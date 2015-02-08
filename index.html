@@ -92,7 +92,7 @@
       remove.className = 'remove';
       remove.innerHTML = 'x';
       remove.onclick = function() {
-        if(localStorage) localStorage.removeItem(filename);
+        if(localStorage) localStorage.removeItem("b64-"+filename);
         results.removeChild(div);
       };
       div.appendChild(remove);
@@ -119,12 +119,13 @@
       div.appendChild(ta);
     
       results.appendChild(div);
-      if(localStorage) localStorage.setItem(filename, dataUri);
+      if(localStorage) localStorage.setItem("b64-"+filename, dataUri);
     }
     
     if(localStorage)
       for(var filename in localStorage)
-        fileLoaded(filename, localStorage.getItem(filename));
+        if(filename.indexOf("b64-") === 0)
+          fileLoaded(filename, localStorage.getItem(filename));
     </script>
   </body>
 </html>
