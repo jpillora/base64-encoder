@@ -125,7 +125,7 @@
     if(localStorage)
       for(var filename in localStorage)
         if(filename.indexOf("b64-") === 0)
-          fileLoaded(filename, localStorage.getItem(filename));
+          fileLoaded(filename.replace("b64-",""), localStorage.getItem(filename));
     </script>
   </body>
 </html>
