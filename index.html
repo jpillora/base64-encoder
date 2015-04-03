@@ -73,13 +73,15 @@
     dropper.ondragend = function () { dropper.className = ''; return false; };
     dropper.ondrop = function (e) {
       e.preventDefault();
-      var file = e.dataTransfer.files[0],
-          reader = new FileReader();
-      reader.onload = function(event) {
-        fileLoaded(file.name, event.target.result);
-      };
-      reader.readAsDataURL(file);
-      dropper.className = '';
+      var files = [].slice.call(e.dataTransfer.files);
+      files.forEach(function (file) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          fileLoaded(file.name, event.target.result);
+        };
+        reader.readAsDataURL(file);
+        dropper.className = '';
+      });
       return false;
     };
     
