@@ -29,7 +29,16 @@
 			position: absolute;
 			right: 10;
 			top: 10;
-			opacity: 0.5;
+			opacity: 0.7;
+			background: #ff3860;
+		}
+
+		.downloadFile {
+			position: absolute;
+			right: 35;
+			top: 10;
+			opacity: 0.7;
+			background: #23d260;
 		}
 
 		textarea {
@@ -71,6 +80,8 @@
 	<h4>Drop Files here</h4>
 	<div id="dropper"></div>
 	<div id="results"></div>
+
+
 	<script>
 		if (typeof window.FileReader === 'undefined')
 			alert('File API & FileReader not supported');
@@ -102,6 +113,17 @@
 			e.preventDefault();
 		};
 
+		function downloadURI(uri, name) {
+			// Ref : https://stackoverflow.com/questions/3916191/download-data-url-file
+			var link = document.createElement("a");
+			link.download = name;
+			link.href = uri;
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			delete link;
+		}
+
 		function fileLoaded(filename, dataUri) {
 
 			var div = document.createElement("div");
@@ -115,6 +137,14 @@
 				results.removeChild(div);
 			};
 			div.appendChild(remove);
+
+			var newtab = document.createElement("button");
+			newtab.className = 'downloadFile';
+			newtab.innerHTML = 'DownloadFile';
+			newtab.onclick = function () {
+				downloadURI(dataUri, filename)
+			};
+			div.appendChild(newtab);
 
 			var name = document.createElement("div");
 			name.innerHTML = filename;
@@ -138,14 +168,16 @@
 			div.appendChild(ta);
 
 			results.appendChild(div);
+
 			if (localStorage) localStorage.setItem("b64-" + filename, dataUri);
 		}
 
-		if (localStorage)
-			for (var filename in localStorage)
+		if (localStorage) {
+			for (var filename in localStorage) {
 				if (filename.indexOf("b64-") === 0)
 					fileLoaded(filename.replace("b64-", ""), localStorage.getItem(filename));
+			}
+		}
 	</script>
 </body>
-
 </html>
