@@ -29,14 +29,16 @@
 			position: absolute;
 			right: 10;
 			top: 10;
-			opacity: 0.5;
+			opacity: 0.7;
+			background: #ff3860;
 		}
 
-		.newtab {
+		.downloadFile {
 			position: absolute;
 			right: 35;
 			top: 10;
-			opacity: 0.5;
+			opacity: 0.7;
+			background: #23d260;
 		}
 
 		textarea {
@@ -137,7 +139,7 @@
 			div.appendChild(remove);
 
 			var newtab = document.createElement("button");
-			newtab.className = 'newtab';
+			newtab.className = 'downloadFile';
 			newtab.innerHTML = 'DownloadFile';
 			newtab.onclick = function () {
 				downloadURI(dataUri, filename)
