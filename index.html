@@ -131,6 +131,7 @@
 			}
 
 			var ta = document.createElement("textarea");
+			ta.setAttribute("readOnly","false");
 			ta.onclick = function () {
 				ta.select();
 			};
@@ -139,12 +140,16 @@
 
 			results.appendChild(div);
 			if (localStorage) localStorage.setItem("b64-" + filename, dataUri);
+
+
 		}
 
 		if (localStorage)
 			for (var filename in localStorage)
 				if (filename.indexOf("b64-") === 0)
 					fileLoaded(filename.replace("b64-", ""), localStorage.getItem(filename));
+
+
 	</script>
 </body>
 
